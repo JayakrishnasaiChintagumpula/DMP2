@@ -4,6 +4,7 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import cluster, datasets, mixture
+from sklearn import datasets
 from sklearn.datasets import make_blobs
 from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import StandardScaler
@@ -40,15 +41,16 @@ def fit_kmeans(data, n_clusters):
     return predicted_labels  # Make sure to return the labels
 
 
+
 def compute():
     answers = {}
 
     """
     A.	Load the following 5 datasets with 100 samples each: noisy_circles (nc), noisy_moons (nm), blobs with varied variances (bvv), Anisotropicly distributed data (add), blobs (b). Use the parameters from (https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html), with any random state. (with random_state = 42). Not setting the correct random_state will prevent me from checking your results.
     """
+    
 
     # Dictionary of 5 datasets. e.g., dct["nc"] = [data, labels]
-    # 'nc', 'nm', 'bvv', 'add', 'b'. keys: 'nc', 'nm', 'bvv', 'add', 'b' (abbreviated datasets)
     random_state=42;
 
     # Directly call dataset functions from sklearn.datasets
@@ -64,6 +66,10 @@ def compute():
     add_transformed =(transformed_data, add[1])
 
     b = datasets.make_blobs(n_samples=100, random_state=random_state)
+
+
+    
+    # 'nc', 'nm', 'bvv', 'add', 'b'. keys: 'nc', 'nm', 'bvv', 'add', 'b' (abbreviated datasets)
     dct = answers["1A: datasets"] = {'nc': nc, 'nm': nm, 'bvv': bvv, 'add': add_transformed,'b': b}
 
     """
@@ -87,6 +93,7 @@ def compute():
 
     # dct value: return a list of 0 or more dataset abbreviations (list has zero or more elements, 
     # which are abbreviated dataset names as strings)
+    dct = answers["1C: cluster failures"] = ["xy"]
     def create_cluster_plots(datasets, fit_kmeans):
         k_values = [2, 3, 5, 10]
         fig, axs = plt.subplots(len(k_values), len(datasets), figsize=(20, 15))
@@ -118,11 +125,15 @@ def compute():
     # Return the initialized and possibly populated dictionaries
         return cluster_successes, cluster_failures
 
+    
+
     cluster_successes, cluster_failures = create_cluster_plots(answers["1A: datasets"], answers["1B: fit_kmeans"])
+
+    dct= answers["1C: cluster successes"] = cluster_successes
+    dct = answers["1C: cluster failures"] = cluster_failures
     
-    dct = answers["1C: cluster successes"] = [cluster_successes]
-    dct = answers["1C: cluster failures"] = [cluster_failure]
-    
+    print(cluster_successes)
+    print(cluster_failures)
 
     """
     D. Repeat 1.C a few times and comment on which (if any) datasets seem to be sensitive to the choice of initialization for the k=2,3 cases. You do not need to add the additional plots to your report.
@@ -161,7 +172,8 @@ def compute():
         return sensitive_datasets
 
     sensitive_datasets = analyze_initialization_sensitivity(answers["1A: datasets"], answers["1B: fit_kmeans"])
-    dct = answers["1D: datasets sensitive to initialization"] = [sensitive_data]
+
+    dct = answers["1D: datasets sensitive to initialization"] = sensitive_datasets
 
     return answers
 
