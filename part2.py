@@ -94,28 +94,15 @@ def compute():
 
     # dct value: a list of tuples, e.g., [[0, 100.], [1, 200.]]
     # Each tuple is a (k, SSE) pair
-    sse_values = fit_kmeans(array_1, 8)[1]
-
-    # Generating (k, SSE) pairs
-    k_sse_pairs = [(k + 1, sse) for k, sse in enumerate(sse_values)]
-
-    # Plotting the manually calculated SSE as a function of k
-    plt.figure(figsize=(10, 6))
-    plt.plot(range(1, 9), sse_values, marker='o', linestyle='-', color='green', label='SSE (Manual Calculation)')
-    plt.title('Elbow Method for Optimal k (Manual SSE Calculation)')
-    plt.xlabel('Number of Clusters k')
-    plt.ylabel('Sum of Squared Errors (SSE)')
-    plt.xticks(range(1, 9))
-
-    # Annotating points on the plot
-    for k, sse in k_sse_pairs:
-        plt.text(k, sse, f'[{k}, {sse:.2f}]', ha='center', va='bottom')
-
-    plt.legend()
+    sse_val = fit_kmeans(array_1, 8)[1]
+    sse_values = []
+    for x,y in zip(range(1,9), sse_val):
+        sse_values.append([x,y])
+    plt.plot(np.array(sse_values)[:,1])
     plt.grid(True)
-    plt.show()
-
-    dct = answers["2C: SSE plot"] = [k_sse_pairs]
+    
+    print(sse_values)
+    dct = answers["2C: SSE plot"] = [sse_values]
 
     """
     D.	Repeat part 2.C for inertia (note this is an attribute in the kmeans estimator called _inertia). Do the optimal k’s agree?
