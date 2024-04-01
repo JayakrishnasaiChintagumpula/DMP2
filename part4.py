@@ -56,27 +56,30 @@ def compute():
     # keys: 'nc', 'nm', 'bvv', 'add', 'b' (abbreviated datasets)
     random_state = 42
 
-    # Generate datasets as per 1.A
-    datasets_dict = {
-        'nc': datasets.make_circles(n_samples=100, factor=.5, noise=.05, random_state=random_state),
-        'nm': datasets.make_moons(n_samples=100, noise=.05, random_state=random_state),
-        'bvv': datasets.make_blobs(n_samples=100, cluster_std=[1.0, 2.5, 0.5], random_state=random_state),
-        'add': None,  # This will be generated below as it requires a transformation.
-        'b': datasets.make_blobs(n_samples=100, random_state=random_state)
-    }
+    # Load the datasets
+    noisy_circles = datasets.make_circles(n_samples=100, factor=.5, noise=.05, random_state=random_state)
+    noisy_moons = datasets.make_moons(n_samples=100, noise=.05, random_state=random_state)
+    blobs_varied = datasets.make_blobs(n_samples=100, cluster_std=[1.0, 2.5, 0.5], random_state=random_state)
 
-    # Apply the anisotropic transformation to 'add' dataset
+    aniso_data, aniso_labels = datasets.make_blobs(n_samples=100, random_state=random_state)
     transformation = [[0.6, -0.6], [-0.4, 0.8]]
-    add = datasets.make_blobs(n_samples=100, random_state=random_state)
-    datasets_dict['add'] = (np.dot(add[0], transformation), add[1])
-    
-    # Perform hierarchical clustering on the datasets with different linkage criteria
-    linkages = ['ward', 'complete', 'average', 'single']
-    for dataset_name, (dataset_data, _) in datasets_dict.items():
-        for linkage in linkages:
-            labels = fit_hierarchical_cluster(dataset_data, 2, linkage=linkage)
+    aniso = (np.dot(aniso_data, transformation), aniso_labels)
 
-    dct = answers["4A: datasets"] = labels
+    blobs = datasets.make_blobs(n_samples=100, random_state=random_state)
+
+    # Perform hierarchical clustering on the datasets with different linkage criteria
+    datasets_list = [noisy_circles, noisy_moons, blobs_varied, aniso, blobs]
+    linkage_types = ['ward', 'complete', 'average', 'single']
+    datasets_labels = {}
+
+    # Hierarchical clustering
+    for i, dataset in enumerate(datasets_list):
+        dataset_labels = {}
+        for linkage in linkage_types:
+            labels = fit_hierarchical_cluster(dataset[0], 2, linkage)
+            dataset_labels[linkage] = labels
+        datasets_labels[i] = dataset_labels
+    dct = answers["4A: datasets"] = {'nc': noisy_circles,'nm': noisy_moons,'bvv': blobs_varied,'add': aniso,'b': blobs}
 
     # dct value:  the `fit_hierarchical_cluster` function
     dct = answers["4A: fit_hierarchical_cluster"] = fit_hierarchical_cluster
