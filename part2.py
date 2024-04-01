@@ -95,6 +95,7 @@ def compute():
     # dct value: a list of tuples, e.g., [[0, 100.], [1, 200.]]
     # Each tuple is a (k, SSE) pair
     sse_values = fit_kmeans(array_1, 8)[1]
+    sse_values = list(sse_values)
 
     # Plotting the manually calculated SSE as a function of k
     plt.figure(figsize=(10, 6))
@@ -119,6 +120,7 @@ def compute():
 
     # Extracting the inertia values for plotting
     inertia_values = model_sse_inertia
+    inertia_values = list(inertia_values)
     
     # Plotting the inertia values as a function of k
     plt.figure(figsize=(10, 6))
