@@ -55,8 +55,8 @@ def compute():
     """
 
     # return value of scipy.io.loadmat()
-    mat_data_step_a = io.loadmat('hierarchical_toy_data.mat')
-    answers["3A: toy data"] = mat_data_step_a
+
+    answers["3A: toy data"] = 
 
 
     """
@@ -66,55 +66,17 @@ def compute():
     # Answer: NDArray
     data_points_step_b = mat_data_step_a['X']
 
-    # Create the linkage matrix using the single linkage method on the data points
-    Z_step_b = linkage(data_points_step_b, 'single')
-    plt.figure(figsize=(10, 7))
-    plt.title("Hierarchical Clustering Dendrogram (Single Linkage)")
-    dendo= dendrogram(Z_step_b)
-    plt.xlabel("Index of Data Point")
-    plt.ylabel("Euclidean Distance")
-    plt.show()
-
-    answers["3B: linkage"] = Z_step_b
-    answers["3B: dendogram"] = dendo
+    answers["3B: linkage"] = 
+    answers["3B: dendogram"] = 
 
     """
     C.	Consider the merger of the cluster corresponding to points with index sets {I={8,2,13}} J={1,9}}. At what iteration (starting from 0) were these clusters merged? That is, what row does the merger of A correspond to in the linkage matrix Z? The rows count from 0. 
     """
 
     # Answer type: integer
-    cluster_I = [8, 2, 13]
-    cluster_J = [1, 9]
-
-    # Combine indices from clusters I and J
-    combined_indices = cluster_I + cluster_J
     
-    # Extract the combined data points
-    combined_data_points = data_points_step_b[combined_indices, :]
     
-    # Calculate the Euclidean distance matrix for the combined data points
-    distance_matrix_combined = pdist(combined_data_points, metric='euclidean')
-    
-    # Perform hierarchical clustering with the single linkage method on the combined distance matrix
-    Z_combined = linkage(distance_matrix_combined, method='single')
-    
-    # Extract dissimilarities from the linkage matrix for combined clusters I and J
-    dissimilarities_combined = Z_combined[:, 2]
-    
-    # The final merge dissimilarity among the combined clusters I and J
-    final_merge_dissimilarity = dissimilarities_combined[-1]
-
-    # Find the iteration in the full dataset's linkage matrix Z where this dissimilarity occurs
-    iteration_found = None
-    for i, row in enumerate(Z):
-        if np.isclose(row[2], final_merge_dissimilarity, atol=1e-04):
-            iteration_found = i
-            break
-
-    # Output the iteration where clusters I and J would have their final merge in the full dataset context
-    iteration_found
-    
-    answers["3C: iteration"] = iteration_found
+    answers["3C: iteration"] = 
 
     """
     D.	Write a function that takes the data and the two index sets {I,J} above, and returns the dissimilarity given by single link clustering using the Euclidian distance metric. The function should output the same value as the 3rd column of the row found in problem 2.C.
@@ -128,29 +90,10 @@ def compute():
     """
 
     # List the clusters. the [{0,1,2}, {3,4}, {5}, {6}, ...] represents a list of lists.
-    clusters_at_start = [[i] for i in range(len(data_points_step_b))]
-
-    # Iterate through the linkage matrix up to the specified iteration (iteration 4),
-    # updating the cluster compositions based on the merge information.
-    for i in range(iteration_found + 1):
-        merge_info = Z[i]
-        idx1, idx2 = int(merge_info[0]), int(merge_info[1])
-        
-        # Creating a new cluster by merging clusters idx1 and idx2.
-        new_cluster = clusters_at_start[idx1] + clusters_at_start[idx2]
-        
-        # Update the clusters_at_start list with the new cluster, replacing the merged clusters.
-        # To avoid altering the list while iterating, we first mark merged clusters as None.
-        clusters_at_start[idx1], clusters_at_start[idx2] = None, None
-        clusters_at_start.append(new_cluster)
     
-    # Filter out None entries and sort the clusters for readability.
-    clusters_present_at_iteration = [sorted(cluster) for cluster in clusters_at_start if cluster is not None]
-    
-    clusters_present_at_iteration
 
     # List the clusters. the [{0,1,2}, {3,4}, {5}, {6}, ...] represents a list of lists.
-    answers["3E: clusters"] = clusters_present_at_iteration
+    answers["3E: clusters"] = 
     """
     F.	Single linked clustering is often criticized as producing clusters where “the rich get richer”, that is, where one cluster is continuously merging with all available points. Does your dendrogram illustrate this phenomenon?
     """
