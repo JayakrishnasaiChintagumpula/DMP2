@@ -102,7 +102,7 @@ def compute():
     plt.grid(True)
     
     print(sse_values)
-    dct = answers["2C: SSE plot"] = [sse_values]
+    dct = answers["2C: SSE plot"] = sse_values
 
     """
     D.	Repeat part 2.C for inertia (note this is an attribute in the kmeans estimator called _inertia). Do the optimal k’s agree?
