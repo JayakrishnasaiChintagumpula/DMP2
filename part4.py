@@ -26,11 +26,23 @@ In this task, you will explore hierarchical clustering over different datasets. 
 # Change the arguments and return according to 
 # the question asked. 
 
-def fit_hierarchical_cluster():
-    return None
+def fit_hierarchical_cluster(data, n_clusters, linkage='ward'):
+    scaler = StandardScaler()
+    data_scaled = scaler.fit_transform(data)
+    model = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
+    model.fit(data_scaled)
+    return model.labels_
 
-def fit_modified():
-    return None
+def fit_modified(data):
+    scaler = StandardScaler()
+    data_scaled = scaler.fit_transform(data)
+    Z = linkage(data_scaled, 'ward')
+    diff = np.diff(Z[:, 2])
+    elbow = np.argmax(diff)
+    cutoff_distance = Z[elbow, 2]
+    model = AgglomerativeClustering(distance_threshold=cutoff_distance, n_clusters=None)
+    model.fit(data_scaled)
+    return model.labels_, cutoff_distance
 
 
 def compute():
