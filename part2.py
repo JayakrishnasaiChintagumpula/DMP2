@@ -99,7 +99,8 @@ def compute():
     for x,y in zip(range(1,9), sse_val):
         sse_values.append([x,y])
     plt.plot(np.array(sse_values)[:,1])
-    plt.grid(True)
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, 9), sse_values, marker='o', linestyle='-', color='blue', label='Inertia')
     
     print(sse_values)
     dct = answers["2C: SSE plot"] = sse_values
@@ -109,24 +110,12 @@ def compute():
     """
 
     # dct value has the same structure as in 2C
-    model_sse_inertia= fit_kmeans(array_1,k= 8)[0]
-
-    # Extracting the inertia values for plotting
-    inertia_values = model_sse_inertia
-    inertia_values = list(inertia_values)
+    inertia_val = fit_kmeans(array_1, 8)[0]
+    inertia_values = []
+    for x,y in zip(range(1,9), inertia_val):
+        inertia_values.append([x,y])
     
-    # Plotting the inertia values as a function of k
-    plt.figure(figsize=(10, 6))
-    plt.plot(range(1, 9), inertia_values, marker='o', linestyle='-', color='blue', label='Inertia')
-    plt.title('Inertia for Different Numbers of Clusters k')
-    plt.xlabel('Number of Clusters k')
-    plt.ylabel('Inertia (SSE)')
-    plt.xticks(range(1, 9))
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-    dct = answers["2D: inertia plot"] = inertia_values
-
+    dct = answers["2D: inertia plot"] = sse_values
     # dct value should be a string, e.g., "yes" or "no"
     dct = answers["2D: do ks agree?"] = "yes"
 
